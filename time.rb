@@ -4,7 +4,7 @@ require 'dotenv'
 Dotenv.load
 
 options = {
-  username: ENV['USER'],
+  username: ENV['USER_EMAIL'],
   password: ENV['PASSWORD'],
   site: 'https://hitfoxgamefinder.atlassian.net/',
   context_path: '',
