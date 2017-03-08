@@ -16,7 +16,7 @@ class IssueAnalyser
     subtasks_total = []
     subtasks_noestimation = []
     subtasks = JIRA::Resource::Issue.jql(client, "parent = #{key}")
-    has_qa = false
+    has_qa = issue.summary.downcase.include?('no qa')
     subtasks.each do |subtask|
       assignee = subtask.assignee.name
       has_qa = true if QAUSERS.include?(assignee)
@@ -29,14 +29,14 @@ class IssueAnalyser
       subtasks_noestimation << subtask if total_time.nil? || total_time.zero?
     end
     @errors << 'No QA subtask is assigned' unless has_qa
-    if subtasks_total.count == 0
-      @errors << "Total number of subtasks #{subtasks_total.count}"
-    end
+    @errors << "Total number of subtasks #{subtasks_total.count}" if subtasks_total.count.zero?
     subtasks_noestimation.each do |subtask|
       @errors << "Unestimated subtask #{subtask.key}"
     end
     print_errors
   end
+
+  private
 
   def print_errors
     return if @errors.empty?
@@ -49,8 +49,5 @@ class IssueAnalyser
 
   def filter_issue?
     issue.summary.downcase.include?('plan') && issue.summary.downcase.include?('sprint')
-  end
-
-  def filter_subtask?
   end
 end
