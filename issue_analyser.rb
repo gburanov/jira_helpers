@@ -16,8 +16,10 @@ class IssueAnalyser
     subtasks_total = []
     subtasks_noestimation = []
     subtasks = JIRA::Resource::Issue.jql(client, "parent = #{key}")
+    has_qa = false
     subtasks.each do |subtask|
       assignee = subtask.assignee.name
+      has_qa = true if QAUSERS.include?(assignee)
       unless POSSIBLE_USERS.include?(assignee)
         @errors << "Strange subtask #{subtask.key} assignee #{assignee}"
       end
@@ -26,6 +28,7 @@ class IssueAnalyser
       total_time = subtask.aggregatetimeoriginalestimate
       subtasks_noestimation << subtask if total_time.nil? || total_time.zero?
     end
+    @errors << 'No QA subtask is assigned' unless has_qa
     if subtasks_total.count == 0
       @errors << "Total number of subtasks #{subtasks_total.count}"
     end
