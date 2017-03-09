@@ -3,11 +3,26 @@ require_relative 'constants'
 class IssueAnalyser
   attr_reader :issue
   attr_reader :client
+  attr_reader :errors
 
   def initialize(client, issue)
     @issue = issue
     @client = client
     @errors = []
+  end
+
+  def type
+    return 'dev' if DEVUSERS.include?(issue.assignee.name)
+    return 'pm' if PMUSERS.include?(issue.assignee.name)
+    return 'qa' if QAUSERS.include?(issue.assignee.name)
+    'unknown'
+  end
+
+  def call2
+    return if filter_issue?
+    dump if type == 'unknown'
+    call if type == 'dev'
+    type
   end
 
   def call
@@ -38,13 +53,17 @@ class IssueAnalyser
 
   private
 
-  def print_errors
-    return if @errors.empty?
+  def dump
     puts "#{issue.key} - #{issue.summary} - for #{issue.assignee.name}"
     @errors.each do |error|
       puts error
     end
     puts ''
+  end
+
+  def print_errors
+    return if @errors.empty?
+    dump
   end
 
   def filter_issue?
