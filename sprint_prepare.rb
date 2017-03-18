@@ -2,6 +2,7 @@ require 'jira-ruby'
 require 'byebug'
 require 'dotenv'
 require_relative 'new_sprint_analyser'
+require_relative 'vacations_importer'
 Dotenv.load
 
 options = {
@@ -11,6 +12,8 @@ options = {
   context_path: '',
   auth_type: :basic
 }
+
+vacations = VacationsImporter.new.import
 
 client = JIRA::Client.new(options)
 filter = client.Filter.find('26004')

@@ -17,7 +17,7 @@ class TimeValidator
   end
 
   def call
-    issues[0...5].each do |issue|
+    issues.each do |issue|
       issue.fetch
       worklogs = issue.worklogs
       worklogs.each { |worklog| parse_worklog(worklog) }
@@ -57,7 +57,7 @@ class TimeValidator
     end
 
     @authors.each do |author, time|
-      puts "#{author} - #{time / 60 / 60 / 8}days - #{time / 60 / 60}hours"
+      puts "#{author} - #{time / 60 / 60 / 8}days - #{time / 60 / 60}hours. Estimated is #{person_time.estimated_for}"
     end
   end
 end
