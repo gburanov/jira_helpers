@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jira-ruby'
 require 'byebug'
 require 'dotenv'
@@ -12,8 +14,7 @@ options = {
   auth_type: :basic
 }
 
-startDate = Date.parse('22.02.2017')
 client = JIRA::Client.new(options)
 filter = client.Filter.find('24701')
 issues = JIRA::Resource::Issue.jql(client, filter.jql, start_at: nil, max_results: 1000)
-TimeValidator.new(issues, startDate).call
+TimeValidator.new(issues).call
