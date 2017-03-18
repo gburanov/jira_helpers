@@ -2,6 +2,7 @@
 require_relative 'monkey_patching'
 require_relative 'constants'
 require_relative 'vacations'
+require_relative 'time_presenter'
 
 class PersonTimeAnalyser
   attr_reader :sprint_start
@@ -20,7 +21,7 @@ class PersonTimeAnalyser
 
   def total
     DEVUSERS.each do |user|
-      puts "User #{user} has #{estimated_total(user)} hours"
+      puts "User #{user} has #{TimePresenter.new(estimated_total(user)).call}"
     end
   end
 
@@ -39,7 +40,7 @@ class PersonTimeAnalyser
   private
 
   def estimated_for(author, day)
-    time_per_day = TEAM_LEADS.include?(author) ? 3 : 6
+    time_per_day = TEAM_LEADS.include?(author) ? 2.5 : 5
     days = business_days_between(sprint_start, day)
     days = vacations.filter(author, days)
     time_per_day * days.count

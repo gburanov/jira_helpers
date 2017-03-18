@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 require_relative 'constants'
+require_relative 'issue_presenter'
 
 class IssueAnalyser
   attr_reader :issue
@@ -54,7 +56,7 @@ class IssueAnalyser
   private
 
   def dump
-    puts "#{issue.key} - #{issue.summary} - for #{issue.assignee.name}"
+    puts "#{IssuePresenter.new(issue).call} - for #{issue.assignee.name}"
     @errors.each do |error|
       puts error
     end

@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 require 'jira-ruby'
-require 'byebug'
 require 'dotenv'
-require_relative 'new_sprint_analyser'
-require_relative 'vacations_importer'
-require_relative 'person_time_analyser'
+require_relative 'lib/new_sprint_analyser'
+require_relative 'lib/vacations_importer'
+require_relative 'lib/person_time_analyser'
 Dotenv.load
 
 options = {
@@ -19,6 +18,7 @@ options = {
 vacations = VacationsImporter.new.import
 person_time = PersonTimeAnalyser.new(NEXT_SPRINT_START, vacations)
 person_time.total
+puts ''
 
 client = JIRA::Client.new(options)
 filter = client.Filter.find('26004')

@@ -12,6 +12,7 @@ class IssuePresenter
   private
 
   def parent
+    return '' if issue.try(:parent).nil?
     issue.parent['fields']['summary']
   end
 end
