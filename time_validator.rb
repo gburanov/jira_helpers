@@ -57,7 +57,21 @@ class TimeValidator
     end
 
     @authors.each do |author, time|
-      puts "#{author} - #{time / 60 / 60 / 8}days - #{time / 60 / 60}hours. Estimated is #{person_time.estimated_for}"
+      puts "#{author} - #{TimePresenter.new(spend_time(time)).call}. " +
+           "Estimated is #{TimePresenter.new(estimated_time(author)).call}. " +
+           "This is #{percents(author, time)}%"
     end
+  end
+
+  def percents(author, time)
+    estimated_time(author).to_f / spend_time(time) * 100
+  end
+
+  def spend_time(time)
+    time / 60 / 60
+  end
+
+  def estimated_time(author)
+    person_time.estimated_for(author)
   end
 end

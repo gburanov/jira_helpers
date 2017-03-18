@@ -18,6 +18,7 @@ client = JIRA::Client.new(options)
 filter = client.Filter.find('24701')
 issues = JIRA::Resource::Issue.jql(client, filter.jql, start_at: nil, max_results: 1000)
 
-person_time = PersonTimeAnalyser.new(START_DATE)
+vacations = VacationsImporter.new.import
+person_time = PersonTimeAnalyser.new(START_DATE, vacations)
 
 TimeValidator.new(issues, person_time).call

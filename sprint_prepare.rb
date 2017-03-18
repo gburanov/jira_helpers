@@ -3,6 +3,7 @@ require 'byebug'
 require 'dotenv'
 require_relative 'new_sprint_analyser'
 require_relative 'vacations_importer'
+require_relative 'person_time_analyser'
 Dotenv.load
 
 options = {
@@ -14,6 +15,8 @@ options = {
 }
 
 vacations = VacationsImporter.new.import
+person_time = PersonTimeAnalyser.new(NEXT_SPRINT_START, vacations)
+person_time.total
 
 client = JIRA::Client.new(options)
 filter = client.Filter.find('26004')
