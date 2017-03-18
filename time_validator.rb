@@ -5,10 +5,12 @@ require_relative 'issue_presenter'
 class TimeValidator
   attr_reader :issues
   attr_reader :start_date
+  attr_reader :person_time
 
-  def initialize(issues)
+  def initialize(issues, person_time)
     @issues = issues
-    @start_date = Date.parse(START_DATE)
+    @start_date = START_DATE
+    @person_time = person_time
 
     @array = {}
     @authors = {}
@@ -39,6 +41,7 @@ class TimeValidator
   end
 
   def report
+    person_time.call
     puts ''
 
     @array.each do |date, authors|

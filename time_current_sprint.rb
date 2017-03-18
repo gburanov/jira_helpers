@@ -4,6 +4,7 @@ require 'jira-ruby'
 require 'byebug'
 require 'dotenv'
 require_relative 'time_validator'
+require_relative 'person_time_analyser'
 Dotenv.load
 
 options = {
@@ -13,8 +14,10 @@ options = {
   context_path: '',
   auth_type: :basic
 }
-
 client = JIRA::Client.new(options)
 filter = client.Filter.find('24701')
 issues = JIRA::Resource::Issue.jql(client, filter.jql, start_at: nil, max_results: 1000)
-TimeValidator.new(issues).call
+
+person_time = PersonTimeAnalyser.new(START_DATE)
+
+TimeValidator.new(issues, person_time).call
