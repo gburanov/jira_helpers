@@ -7,6 +7,6 @@ class TimePresenter
   end
 
   def call
-    "#{hours / 8}days - #{hours}hours"
+    "#{(hours.to_f / 8).round(1)} days(#{hours} hours)"
   end
 end

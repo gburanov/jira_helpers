@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require_relative 'constants'
 require_relative 'issue_presenter'
+require_relative 'time_presenter'
 
 class TimeValidator
   attr_reader :issues
@@ -64,7 +65,7 @@ class TimeValidator
   end
 
   def percents(author, time)
-    estimated_time(author).to_f / spend_time(time) * 100
+    ((spend_time(time) / estimated_time(author).to_f) * 100).round(1)
   end
 
   def spend_time(time)
@@ -72,6 +73,6 @@ class TimeValidator
   end
 
   def estimated_time(author)
-    person_time.estimated_for(author)
+    person_time.estimated_until_today(author)
   end
 end

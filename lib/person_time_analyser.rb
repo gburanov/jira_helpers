@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require_relative 'monkey_patching'
 require_relative 'constants'
+require_relative 'vacations'
 
 class PersonTimeAnalyser
   attr_reader :sprint_start

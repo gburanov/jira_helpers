@@ -3,8 +3,9 @@
 require 'jira-ruby'
 require 'byebug'
 require 'dotenv'
-require_relative 'time_validator'
-require_relative 'person_time_analyser'
+require_relative 'lib/time_validator'
+require_relative 'lib/person_time_analyser'
+require_relative 'lib/vacations_importer'
 Dotenv.load
 
 options = {
