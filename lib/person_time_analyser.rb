@@ -4,6 +4,9 @@ require_relative 'constants'
 require_relative 'vacations'
 require_relative 'time_presenter'
 
+TEAM_LEAD_HOURS_PER_DAY = 2.5
+DEV_HOURS_PER_DAY = 5
+
 class PersonTimeAnalyser
   attr_reader :sprint_start
   attr_reader :sprint_end
@@ -40,7 +43,7 @@ class PersonTimeAnalyser
   private
 
   def estimated_for(author, day)
-    time_per_day = TEAM_LEADS.include?(author) ? 2.5 : 5
+    time_per_day = TEAM_LEADS.include?(author) ? TEAM_LEAD_HOURS_PER_DAY : DEV_HOURS_PER_DAY
     days = business_days_between(sprint_start, day)
     days = vacations.filter(author, days)
     time_per_day * days.count
