@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'active_support/core_ext/module/delegation'
+
 require_relative 'constants'
 require_relative 'issue_presenter'
 
@@ -13,10 +15,12 @@ class IssueAnalyser
     @errors = []
   end
 
+  delegate :assignee, to: :issue
+
   def type
-    return 'dev' if DEVUSERS.include?(issue.assignee.name)
-    return 'pm' if PMUSERS.include?(issue.assignee.name)
-    return 'qa' if QAUSERS.include?(issue.assignee.name)
+    return 'dev' if DEVUSERS.include?(assignee.name)
+    return 'pm' if PMUSERS.include?(assignee.name)
+    return 'qa' if QAUSERS.include?(assignee.name)
     'unknown'
   end
 

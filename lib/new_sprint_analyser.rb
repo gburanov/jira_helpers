@@ -1,4 +1,5 @@
 require_relative 'issue_analyser'
+require 'byebug'
 
 class NewSprintAnalyser
   attr_reader :issues
@@ -12,10 +13,11 @@ class NewSprintAnalyser
     @dev_stories_bad = 0
   end
 
-  def call
+  def call(user = nil)
     issues.each do |issue|
       issue.fetch
       analyser = IssueAnalyser.new(client, issue)
+      next if user.present? && user != analyser.assignee.name
       type = analyser.call2
       @pm_stories += 1 if type == 'pm'
       @dev_stories += 1 if type == 'dev'

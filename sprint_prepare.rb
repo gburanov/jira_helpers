@@ -15,12 +15,14 @@ options = {
   auth_type: :basic
 }
 
-vacations = VacationsImporter.new.import
-person_time = PersonTimeAnalyser.new(NEXT_SPRINT_START, vacations)
-person_time.total
-puts ''
+if ARGV.empty?
+  vacations = VacationsImporter.new.import
+  person_time = PersonTimeAnalyser.new(NEXT_SPRINT_START, vacations)
+  person_time.total
+  puts ''
+end
 
 client = JIRA::Client.new(options)
 filter = client.Filter.find('26004')
 issues = JIRA::Resource::Issue.jql(client, filter.jql, start_at: nil, max_results: 1000)
-NewSprintAnalyser.new(client, issues).call
+NewSprintAnalyser.new(client, issues).call(ARGV[0])
