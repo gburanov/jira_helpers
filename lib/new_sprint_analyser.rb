@@ -17,7 +17,7 @@ class NewSprintAnalyser
     issues.each do |issue|
       issue.fetch
       analyser = IssueAnalyser.new(client, issue)
-      next if user.present? && user != analyser.assignee.name
+      next if filter_by_user(issue.assignee, user)
       type = analyser.call2
       @pm_stories += 1 if type == 'pm'
       @dev_stories += 1 if type == 'dev'
@@ -27,6 +27,14 @@ class NewSprintAnalyser
   end
 
   private
+
+  def filter_by_user(assignee, user)
+    return false unless user.present?
+    return false if user == 'ft2' && FT2USERS.include?(assignee.name)
+    return false if user == 'ft1' && FT1USERS.include?(assignee)
+    return false if user.present? && user == assignee.name
+    true
+  end
 
   def summary
     puts "Pm stories #{@pm_stories}"
