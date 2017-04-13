@@ -9,7 +9,16 @@ class IssuePresenter
     "#{issue.key} - #{issue.summary}(#{parent})"
   end
 
+  def full
+    byebug
+    "#{call}. Author #{author}. Status"
+  end
+
   private
+
+  def author
+    issue.assignee.name
+  end
 
   def parent
     return '' if issue.try(:parent).nil?
