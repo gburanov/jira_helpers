@@ -44,7 +44,7 @@ class IssueAnalyser
       unless POSSIBLE_USERS.include?(assignee)
         @errors << "Strange subtask #{subtask.key} assignee #{assignee}"
       end
-      next unless FT2USERS.include?(assignee)
+      next unless DEVUSERS.include?(assignee)
       subtasks_total << subtask
       total_time = subtask.aggregatetimeoriginalestimate
       subtasks_noestimation << subtask if total_time.nil? || total_time.zero?

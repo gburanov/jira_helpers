@@ -31,7 +31,7 @@ class NewSprintAnalyser
   def filter_by_user(assignee, user)
     return false unless user.present?
     return false if user == 'ft2' && FT2USERS.include?(assignee.name)
-    return false if user == 'ft1' && FT1USERS.include?(assignee)
+    return false if user == 'ft1' && FT1USERS.include?(assignee.name)
     return false if user.present? && user == assignee.name
     true
   end

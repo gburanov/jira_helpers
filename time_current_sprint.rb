@@ -1,21 +1,10 @@
 # frozen_string_literal: true
-
-require 'jira-ruby'
-require 'byebug'
-require 'dotenv'
+require_relative 'lib/client.rb'
 require_relative 'lib/time_validator'
 require_relative 'lib/person_time_analyser'
 require_relative 'lib/vacations_importer'
-Dotenv.load
 
-options = {
-  username: ENV['USER_EMAIL'],
-  password: ENV['PASSWORD'],
-  site: 'https://hitfoxgamefinder.atlassian.net/',
-  context_path: '',
-  auth_type: :basic
-}
-client = JIRA::Client.new(options)
+client = default_client
 filter = client.Filter.find('24701')
 issues = JIRA::Resource::Issue.jql(client, filter.jql, start_at: nil, max_results: 1000)
 
