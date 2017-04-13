@@ -14,7 +14,7 @@ class ChangelogAnalyzer
   def moved_to_done?
     history.select do |h_element|
       h_element['created'].to_date > START_DATE && filter_items(h_element['items']).count.positive?
-    end
+    end.count.positive?
   end
 
   def filter_items(items)

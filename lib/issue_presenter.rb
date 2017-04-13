@@ -10,14 +10,17 @@ class IssuePresenter
   end
 
   def full
-    byebug
-    "#{call}. Author #{author}. Status"
+    "#{call}. Author #{author}. Status #{status}"
   end
 
   private
 
   def author
     issue.assignee.name
+  end
+
+  def status
+    issue.status.name
   end
 
   def parent
