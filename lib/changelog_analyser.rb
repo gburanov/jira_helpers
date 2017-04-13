@@ -17,13 +17,17 @@ class ChangelogAnalyzer
     end.count.positive?
   end
 
+  private
+
   def filter_items(items)
     items.select do |item|
-      item['field'] == 'status' && ['QA', 'Done'].include?(item['toString'])
+      item['field'] == 'status' && valid_statuses.include?(item['toString'])
     end
   end
 
-  private
+  def valid_statuses
+    %w(QA Done)
+  end
 
   def history
     full_issue = client.Issue.find(issue.key, expand: 'changelog')
